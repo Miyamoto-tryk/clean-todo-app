@@ -12,13 +12,13 @@ import { View } from "@/framework_driver/View";
 import { userAgentFromString } from "next/server";
 
 export default function Home() {
-  const initialViewModel: ViewModelDataStructure = {
+  const [viewModel, setViewModel] = useState({
     allNames: ["name"],
     displayMessage: "hello",
-  };
-  const [viewModel, setViewModel] = useState(initialViewModel);
+  });
   const [inputName, setInputName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
+
   const userRepository = new PrismaUserRepository();
   const presenter = new Presenter();
   const useCaseInteractor = new UseCaseInteractor(userRepository, presenter);
@@ -27,12 +27,13 @@ export default function Home() {
     useCaseInteractor,
     inputName,
     inputEmail,
-    "POST",
+    "GET",
     0
   );
-  const handleClick = async () => {
+  const handleClick = async (control: string) => {
     controller.setEmail(inputEmail);
     controller.setName(inputName);
+    controller.setControl(control);
     await controller.exeUseCase();
     setViewModel(presenter.viewModel);
   };
@@ -60,10 +61,18 @@ export default function Home() {
         <button
           type="submit"
           onClick={() => {
-            handleClick();
+            handleClick("POST");
           }}
         >
           追加
+        </button>
+        <button
+          type="submit"
+          onClick={() => {
+            handleClick("GET");
+          }}
+        >
+          一覧を表示
         </button>
       </div>
 

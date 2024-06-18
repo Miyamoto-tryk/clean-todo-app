@@ -24,4 +24,7 @@ export class Controller {
   setEmail(email: string) {
     this.inputData.email = email;
   }
+  setControl(control: string) {
+    this.inputData.control = control;
+  }
 }
