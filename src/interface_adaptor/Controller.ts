@@ -1,6 +1,6 @@
 import { InputBoundaryInterface } from "@/usecases/InputBoundaryInterface";
 import { InputData } from "@/usecases/InputDataStructure";
-class Controller {
+export class Controller {
   private useCaseInteractor: InputBoundaryInterface;
   private inputData;
   //ユーザからの入力を整形

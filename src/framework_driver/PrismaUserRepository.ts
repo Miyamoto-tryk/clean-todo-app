@@ -5,41 +5,37 @@ import {
 import { PrismaClient } from "@prisma/client";
 
 export class PrismaUserRepository implements UserRepositoryInterface {
-  private prisma: PrismaClient;
-
-  constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
-  }
-
-  async create(data: { name: string; email: string }): Promise<User> {
-    const newUser = await this.prisma.User.create({ data });
-    return new User(newUser.id, newUser.name, newUser.email);
-  }
-  async delete(id: number): Promise<void> {
-    await this.prisma.User.delete({ where: { id } });
-  }
-  async update(
-    id: number,
-    data: { name: string; email: string }
-  ): Promise<User> {
-    const newUser = this.prisma.User.update({
-      where: { id },
-      data: { data },
+  async POST(data: { name: string; email: string }) {
+    const response = await fetch("/api/users", {
+      method: "POST",
+      body: JSON.stringify({ data }),
     });
-    return new User(newUser.id, newUser.name, newUser.email);
+    const users = await response.json();
+    return users;
+  }
+  // async delete(id: number): Promise<void> {
+  //   await this.prisma.User.delete({ where: { id } });
+  // }
+  // async update(
+  //   id: number,
+  //   data: { name: string; email: string }
+  // ): Promise<User> {
+  //   const newUser = this.prisma.User.update({
+  //     where: { id },
+  //     data: { data },
+  //   });
+  //   return new User(newUser.id, newUser.name, newUser.email);
+  // }
+
+  async GET(): Promise<User[]> {
+    const response = await fetch("/api/users", { method: "GET" });
+    const users = await response.json();
+    return users;
   }
 
-  async getAll(): Promise<User[]> {
-    const allUser = this.prisma.User.findMany();
-    return allUser.map(
-      (user: { id: number; name: string; email: string }) =>
-        new User(user.id, user.name, user.email)
-    );
-  }
-
-  async findById(id: number): Promise<User | null> {
-    const user = await this.prisma.User.findUnique({ where: { id } });
-    if (!user) return null;
-    return user;
-  }
+  // async findById(id: number): Promise<User | null> {
+  //   const user = await this.prisma.User.findUnique({ where: { id } });
+  //   if (!user) return null;
+  //   return user;
+  // }
 }

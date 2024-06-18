@@ -13,38 +13,40 @@ export class UseCaseInteractor implements InputBoundaryInterface {
     private presenter: OutputBoundaryInterface
   ) {}
   //操作を実行&操作されたuserを出力するprivate関数
-  private newUser = async (inputData: InputData) => {
+  private newUsers = async (inputData: InputData) => {
     const inputControl = inputData.control;
     const inputName = inputData.name;
     const inputEmail = inputData.email;
     const inputId = inputData.id;
-    if (inputControl == "create") {
-      return await this.userRepository.create({
+    if (inputControl == "POST") {
+      const users = await this.userRepository.POST({
         name: inputName,
         email: inputEmail,
       });
-    } else if (inputControl == "delete") {
-      const user = await this.userRepository.findById(inputId);
-      await this.userRepository.delete(inputId);
-      return user;
-    } else if (inputControl == "update") {
-      return await this.userRepository.update(inputId, {
-        name: inputName,
-        email: inputEmail,
-      });
-    } /*inputControl == "getAll"*/ else {
-      return null;
+      return users;
+      // } else if (inputControl == "delete") {
+      //   const user = await this.userRepository.findById(inputId);
+      //   await this.userRepository.delete(inputId);
+      //   return user;
+      // } else if (inputControl == "update") {
+      //   return await this.userRepository.update(inputId, {
+      //     name: inputName,
+      //     email: inputEmail,
+      //   });
+      // } /*inputControl == "getAll"*/ else {
+      //   return null;
+    } else {
+      const users = await this.userRepository.GET();
+      return users;
     }
   };
   //操作後のuser一覧を取得するprivate関数
-  private allUser = async () => await this.userRepository.getAll();
+  //private allUser = async () => {};
 
   public async handle(inputData: InputData): Promise<void> {
-    const user = await this.newUser(inputData);
-    const allUser = await this.allUser();
+    const allUser = await this.newUsers(inputData);
     const outputData: OutputDataStructure = {
       allUser: allUser,
-      who: user,
       control: inputData.control,
     };
     this.presenter.output(outputData);
