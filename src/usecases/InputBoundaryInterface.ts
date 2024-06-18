@@ -4,5 +4,5 @@ import { User } from "./UserRepositoryInterface";
 
 //Controller -> this  <|- UseCaseInteractor
 export interface InputBoundaryInterface {
-  handle(inputData: InputData): void;
+  handle(inputData: InputData): Promise<void>;
 }

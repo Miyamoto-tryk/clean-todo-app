@@ -2,7 +2,7 @@ import { InputBoundaryInterface } from "@/usecases/InputBoundaryInterface";
 import { InputData } from "@/usecases/InputDataStructure";
 export class Controller {
   private useCaseInteractor: InputBoundaryInterface;
-  private inputData;
+  private inputData: InputData;
   //ユーザからの入力を整形
   constructor(
     useCaseInteractor: InputBoundaryInterface,
@@ -15,7 +15,13 @@ export class Controller {
     this.inputData = { name, email, id, control };
   }
 
-  exeUseCase() {
-    this.useCaseInteractor.handle(this.inputData);
+  async exeUseCase() {
+    await this.useCaseInteractor.handle(this.inputData);
+  }
+  setName(name: string) {
+    this.inputData.name = name;
+  }
+  setEmail(email: string) {
+    this.inputData.email = email;
   }
 }

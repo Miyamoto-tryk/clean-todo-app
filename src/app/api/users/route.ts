@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import prisma from "@/entities/prisma";
+import { useServerInsertedHTML } from "next/navigation";
 
 export async function GET() {
   const users = await getAll();
@@ -11,6 +12,7 @@ export async function POST(request: NextRequest) {
 
   await prisma.User.create({ data });
   const users = await getAll();
+  console.log(users);
   return NextResponse.json(users);
 }
 // export async function DELETE(request: NextRequest) {

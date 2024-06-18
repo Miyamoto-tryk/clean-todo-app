@@ -5,7 +5,10 @@ export const View = ({ allNames, displayMessage }: ViewModelDataStructure) => {
     <>
       <div>
         {allNames.map((name) => (
-          <li key={name}>{name}</li>
+          <li key={name}>
+            <input type="checkbox"></input>
+            {name}
+          </li>
         ))}
       </div>
       <div>{displayMessage}</div>
