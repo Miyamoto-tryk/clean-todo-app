@@ -18,19 +18,17 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     const users = response.json();
     return users;
   }
-  // async delete(id: number): Promise<void> {
-  //   await this.prisma.User.delete({ where: { id } });
-  // }
-  // async update(
-  //   id: number,
-  //   data: { name: string; email: string }
-  // ): Promise<User> {
-  //   const newUser = this.prisma.User.update({
-  //     where: { id },
-  //     data: { data },
-  //   });
-  //   return new User(newUser.id, newUser.name, newUser.email);
-  // }
+  async PUT(
+    id: number,
+    data: { name: string; email: string }
+  ): Promise<User[]> {
+    const response = await fetch(`/api/users?id=${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ data }),
+    });
+    const users = response.json();
+    return users;
+  }
 
   async GET(): Promise<User[]> {
     const response = await fetch("/api/users", { method: "GET" });

@@ -12,12 +12,14 @@ import { View } from "@/framework_driver/View";
 import { userAgentFromString } from "next/server";
 
 export default function Home() {
-  const [viewModel, setViewModel] = useState({
-    allNames: ["name"],
-    displayMessage: "hello",
+  const [viewModel, setViewModel] = useState<ViewModelDataStructure>({
+    allNames: [],
+    displayMessage: "",
+    id: [],
   });
   const [inputName, setInputName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
+  const [inputId, setInputId] = useState(0);
 
   const userRepository = new PrismaUserRepository();
   const presenter = new Presenter();
@@ -27,7 +29,7 @@ export default function Home() {
     inputName,
     inputEmail,
     "GET",
-    4
+    inputId
   );
 
   const handleClick = async (control: string) => {
@@ -37,7 +39,16 @@ export default function Home() {
     await controller.exeUseCase();
     setViewModel(presenter.viewModel);
   };
-
+  const handleCheckbox = (event: {
+    target: { value: string; checked: any };
+  }) => {
+    const id = parseInt(event.target.value);
+    if (event.target.checked) {
+      setInputId(id);
+    } else {
+      setInputId(0);
+    }
+  };
   return (
     <>
       <div>
@@ -82,12 +93,17 @@ export default function Home() {
         >
           削除
         </button>
+        <button
+          type="submit"
+          onClick={() => {
+            handleClick("PUT");
+          }}
+        >
+          ユーザ情報更新
+        </button>
       </div>
 
-      <View
-        displayMessage={viewModel.displayMessage}
-        allNames={viewModel.allNames}
-      />
+      <View viewModelData={viewModel} handlCheckbox={handleCheckbox} />
     </>
   );
 }

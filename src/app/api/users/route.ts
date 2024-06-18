@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   await prisma.User.create({ data });
   const users = await getAll();
-  console.log(users);
+
   return NextResponse.json(users);
 }
 export async function DELETE(request: NextRequest) {
@@ -21,6 +21,14 @@ export async function DELETE(request: NextRequest) {
   await prisma.User.delete({
     where: { id },
   });
+  const users = await getAll();
+  return NextResponse.json(users);
+}
+export async function PUT(request: NextRequest) {
+  const id = parseInt(request.nextUrl.searchParams.get("id")!);
+
+  const { data } = await request.json();
+  await prisma.User.update({ where: { id }, data });
   const users = await getAll();
   return NextResponse.json(users);
 }

@@ -12,7 +12,7 @@ export class UseCaseInteractor implements InputBoundaryInterface {
     private userRepository: UserRepositoryInterface,
     private presenter: OutputBoundaryInterface
   ) {}
-  //操作を実行&操作されたuserを出力するprivate関数
+  //操作を実行&操作後の全userを返すprivate関数
   private newUsers = async (inputData: InputData) => {
     const inputControl = inputData.control;
     const inputName = inputData.name;
@@ -27,13 +27,13 @@ export class UseCaseInteractor implements InputBoundaryInterface {
     } else if (inputControl == "DELETE") {
       const users = await this.userRepository.DELETE(inputId);
       return users;
-      //else if (inputControl == "update") {
-      //   return await this.userRepository.update(inputId, {
-      //     name: inputName,
-      //     email: inputEmail,
-      //   });
-      // } /*inputControl == "getAll"*/ else {
-      //   return null;
+    } else if (inputControl == "PUT") {
+      const users = await this.userRepository.PUT(inputId, {
+        name: inputName,
+        email: inputEmail,
+      });
+
+      return users;
     } else {
       const users = await this.userRepository.GET();
       return users;
