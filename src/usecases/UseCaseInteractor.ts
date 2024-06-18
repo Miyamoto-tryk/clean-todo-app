@@ -24,11 +24,10 @@ export class UseCaseInteractor implements InputBoundaryInterface {
         email: inputEmail,
       });
       return users;
-      // } else if (inputControl == "delete") {
-      //   const user = await this.userRepository.findById(inputId);
-      //   await this.userRepository.delete(inputId);
-      //   return user;
-      // } else if (inputControl == "update") {
+    } else if (inputControl == "DELETE") {
+      const users = await this.userRepository.DELETE(inputId);
+      return users;
+      //else if (inputControl == "update") {
       //   return await this.userRepository.update(inputId, {
       //     name: inputName,
       //     email: inputEmail,

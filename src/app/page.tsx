@@ -22,14 +22,14 @@ export default function Home() {
   const userRepository = new PrismaUserRepository();
   const presenter = new Presenter();
   const useCaseInteractor = new UseCaseInteractor(userRepository, presenter);
-
   const controller = new Controller(
     useCaseInteractor,
     inputName,
     inputEmail,
     "GET",
-    0
+    4
   );
+
   const handleClick = async (control: string) => {
     controller.setEmail(inputEmail);
     controller.setName(inputName);
@@ -73,6 +73,14 @@ export default function Home() {
           }}
         >
           一覧を表示
+        </button>
+        <button
+          type="submit"
+          onClick={() => {
+            handleClick("DELETE");
+          }}
+        >
+          削除
         </button>
       </div>
 

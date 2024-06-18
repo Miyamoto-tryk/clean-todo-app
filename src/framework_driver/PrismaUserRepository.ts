@@ -13,6 +13,11 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     const users = await response.json();
     return users;
   }
+  async DELETE(id: number) {
+    const response = await fetch(`/api/users?id=${id}`, { method: "DELETE" });
+    const users = response.json();
+    return users;
+  }
   // async delete(id: number): Promise<void> {
   //   await this.prisma.User.delete({ where: { id } });
   // }

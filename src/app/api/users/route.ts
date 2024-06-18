@@ -15,15 +15,15 @@ export async function POST(request: NextRequest) {
   console.log(users);
   return NextResponse.json(users);
 }
-// export async function DELETE(request: NextRequest) {
-//   const id = parseInt(request.nextUrl.searchParams.get("id")!);
+export async function DELETE(request: NextRequest) {
+  const id = parseInt(request.nextUrl.searchParams.get("id")!);
 
-//   await prisma.User.delete({
-//     where: { id },
-//   });
-//   const users = await getAll();
-//   return NextResponse.json(users);
-// }
+  await prisma.User.delete({
+    where: { id },
+  });
+  const users = await getAll();
+  return NextResponse.json(users);
+}
 
 async function getAll() {
   const users = await prisma.User.findMany();
