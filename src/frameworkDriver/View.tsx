@@ -29,24 +29,28 @@ export const View = ({
               完了
             </SetUseCaseButton>
             <SetUseCaseButton handleClick={handleClick} useCase={addSub}>
-              SubのTODOを追加
+              SubのTODOに追加
             </SetUseCaseButton>
             <div>
               <Spacer size={5} />
-              {mainTodo.subTodo.map((subTodo) => (
-                <div key={subTodo.id}>
-                  {subTodo.todo}
-                  <Spacer size={5} />
-                  <div>緊急度：{subTodo.emergency}</div>
-                  <Spacer size={5} />
-                  <SetUseCaseButton
-                    handleClick={handleClick}
-                    useCase={deleteSub}
-                  >
-                    完了
-                  </SetUseCaseButton>
-                </div>
-              ))}
+              {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
+                mainTodo.subTodo.map((subTodo) => (
+                  <div key={subTodo.id}>
+                    {subTodo.todo}
+                    <Spacer size={5} />
+                    <div>緊急度：{subTodo.emergency}</div>
+                    <Spacer size={5} />
+                    <SetUseCaseButton
+                      handleClick={handleClick}
+                      useCase={deleteSub}
+                    >
+                      完了
+                    </SetUseCaseButton>
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         ))}

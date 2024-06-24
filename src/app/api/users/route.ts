@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/entities/prisma";
-
+//TODO:エラーハンドリング
 export async function GET() {
-  const users = await getAll();
-  return NextResponse.json(users);
+  console.log("ここには到達");
+  console.log("Prisma Client instance:", prisma);
+  try {
+    const users = await getAll();
+
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
 }
 export async function POST(request: NextRequest) {
   const { data } = await request.json();
