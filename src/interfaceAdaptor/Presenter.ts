@@ -4,19 +4,11 @@ import { ViewModelDataStructure } from "./ViewModelDataStructure";
 
 export class Presenter implements OutputBoundaryInterface {
   viewModel: ViewModelDataStructure = {
-    allNames: ["name"],
-    displayMessage: "hello",
-    id: [],
+    allTodo: [],
   };
 
   output(outputData: OutputDataStructure): void {
-    const allNames: string[] = outputData.allUser.map(
-      (user, index) => user.name
-    );
-    const id: number[] = outputData.allUser.map((user) => user.id);
-    this.viewModel.allNames = allNames;
-    this.viewModel.displayMessage = outputData.control + " done";
-    this.viewModel.id = id;
+    this.viewModel.allTodo = outputData.allTodo;
     console.log(this.viewModel);
   }
 }

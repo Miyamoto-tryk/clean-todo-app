@@ -1,6 +1,5 @@
 export type InputData = {
-  name: string;
-  email: string;
+  content: string;
   id: number;
-  control: string;
+  emergency: number;
 };

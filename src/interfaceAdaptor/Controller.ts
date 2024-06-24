@@ -6,25 +6,18 @@ export class Controller {
   //ユーザからの入力を整形
   constructor(
     useCaseInteractor: InputBoundaryInterface,
-    name: string,
-    email: string,
-    control: string,
-    id: number
+    content: string,
+    id: number,
+    emergency: number
   ) {
     this.useCaseInteractor = useCaseInteractor;
-    this.inputData = { name, email, id, control };
+    this.inputData = { content, id, emergency };
   }
 
   async exeUseCase() {
     await this.useCaseInteractor.handle(this.inputData);
   }
-  setName(name: string) {
-    this.inputData.name = name;
-  }
-  setEmail(email: string) {
-    this.inputData.email = email;
-  }
-  setControl(control: string) {
-    this.inputData.control = control;
+  setUseCase(useCaseInteractor: InputBoundaryInterface) {
+    this.useCaseInteractor = useCaseInteractor;
   }
 }

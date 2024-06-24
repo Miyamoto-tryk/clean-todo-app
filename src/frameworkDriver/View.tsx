@@ -1,40 +1,57 @@
+import { MainTodo } from "@/entities/todo";
 import { ViewModelDataStructure } from "@/interfaceAdaptor/ViewModelDataStructure";
-import { useState } from "react";
+import { Spacer } from "../app/utils/Spacer";
+import { InputBoundaryInterface } from "@/usecases/InputBoundaryInterface";
+import { SetUseCaseButton } from "@/app/components/SetUseCaseButton";
 
 type Props = {
+  handleClick: (useCase: InputBoundaryInterface) => void;
   viewModelData: ViewModelDataStructure;
-  handlCheckbox: (event: {
-    target: {
-      value: string;
-      checked: any;
-    };
-  }) => void;
+  deleteMain: InputBoundaryInterface;
+  deleteSub: InputBoundaryInterface;
+  addSub: InputBoundaryInterface;
 };
-export const View = ({ viewModelData, handlCheckbox }: Props) => {
-  const [selectedUser, setSelectedUser] = useState<number>();
-  const allNames = viewModelData.allNames;
-  const displayMessage = viewModelData.displayMessage;
-  const id = viewModelData.id;
-
+export const View = ({
+  handleClick,
+  viewModelData,
+  deleteMain,
+  deleteSub,
+  addSub,
+}: Props) => {
+  const allTodo = viewModelData.allTodo;
   return (
     <>
       <div>
-        {allNames.map((name, index) => (
-          <li key={index}>
-            <input
-              type="radio"
-              value={id[index]}
-              checked={selectedUser === id[index]}
-              onChange={(event) => {
-                setSelectedUser(id[index]);
-                handlCheckbox(event);
-              }}
-            ></input>
-            {name}
-          </li>
+        {allTodo.map((mainTodo: MainTodo) => (
+          <div key={mainTodo.id}>
+            {mainTodo.title}
+            <SetUseCaseButton handleClick={handleClick} useCase={deleteMain}>
+              完了
+            </SetUseCaseButton>
+            <SetUseCaseButton handleClick={handleClick} useCase={addSub}>
+              SubのTODOを追加
+            </SetUseCaseButton>
+            <div>
+              <Spacer size={5} />
+              {mainTodo.subTodo.map((subTodo) => (
+                <div key={subTodo.id}>
+                  {subTodo.todo}
+                  <Spacer size={5} />
+                  <div>緊急度：{subTodo.emergency}</div>
+                  <Spacer size={5} />
+                  <SetUseCaseButton
+                    handleClick={handleClick}
+                    useCase={deleteSub}
+                  >
+                    完了
+                  </SetUseCaseButton>
+                </div>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
-      <div>{displayMessage}</div>
+      <div></div>
     </>
   );
 };

@@ -3,107 +3,105 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { Controller } from "@/interfaceAdaptor/Controller";
 import { PrismaUserRepository } from "@/frameworkDriver/PrismaUserRepository";
-import prisma from "@/entities/prisma";
+
 import { Presenter } from "@/interfaceAdaptor/Presenter";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ViewModelDataStructure } from "@/interfaceAdaptor/ViewModelDataStructure";
-import { UseCaseInteractor } from "@/usecases/UseCaseInteractor";
+import { PostMainCaseInteractor } from "@/usecases/useCaseInteractor/PostMainUseCaseInteractor";
+import { AddSubCaseInteractor } from "@/usecases/useCaseInteractor/AddSubUseCaseInteractor";
+import { ReadCaseInteractor } from "@/usecases/useCaseInteractor/ReadUseCaseInteractor";
+import { DeleteSubCaseInteractor } from "@/usecases/useCaseInteractor/DeleteSubUseCaseInteractor";
+import { DeleteMainCaseInteractor } from "@/usecases/useCaseInteractor/DeleteMainUseCaseInteractor";
 import { View } from "@/frameworkDriver/View";
-import { userAgentFromString } from "next/server";
+import { SetEmergencyButton } from "./components/SetEmergencyButton";
+import { SetUseCaseButton } from "./components/SetUseCaseButton";
+
+import { InputBoundaryInterface } from "@/usecases/InputBoundaryInterface";
 
 export default function Home() {
   const [viewModel, setViewModel] = useState<ViewModelDataStructure>({
-    allNames: [],
-    displayMessage: "",
-    id: [],
+    allTodo: [],
   });
-  const [inputName, setInputName] = useState("");
-  const [inputEmail, setInputEmail] = useState("");
+  const [inputText, setInputText] = useState("");
+  const [inputEmergency, setInputEmergency] = useState(0);
   const [inputId, setInputId] = useState(0);
 
   const userRepository = new PrismaUserRepository();
   const presenter = new Presenter();
-  const useCaseInteractor = new UseCaseInteractor(userRepository, presenter);
-  const controller = new Controller(
-    useCaseInteractor,
-    inputName,
-    inputEmail,
-    "GET",
-    inputId
+  //ユースケース　インテラクター
+  const postMainUseCase = new PostMainCaseInteractor(userRepository, presenter);
+  const readUseCase = new ReadCaseInteractor(userRepository, presenter);
+  const addSubUseCase = new AddSubCaseInteractor(userRepository, presenter);
+  const deleteSubUseCase = new DeleteSubCaseInteractor(
+    userRepository,
+    presenter
   );
-
-  const handleClick = async (control: string) => {
-    setInputEmail(inputEmail);
-    setInputName(inputName);
-    controller.setControl(control);
+  const deleteMainUseCase = new DeleteMainCaseInteractor(
+    userRepository,
+    presenter
+  );
+  //コントローラー
+  const controller = new Controller(
+    readUseCase,
+    inputText,
+    inputId,
+    inputEmergency
+  );
+  //トリガー
+  const setEmergencyClick = (emergency: number) => {
+    setInputEmergency(emergency);
+  };
+  const setUseCaseClick = async (useCase: InputBoundaryInterface) => {
+    controller.setUseCase(useCase);
     await controller.exeUseCase();
     setViewModel(presenter.viewModel);
   };
-  const handleCheckbox = (event: {
-    target: { value: string; checked: any };
-  }) => {
-    const id = parseInt(event.target.value);
-    if (event.target.checked) {
-      setInputId(id);
-    } else {
-      setInputId(0);
-    }
-  };
+  // const handleCheckbox = (event: {
+  //   target: { value: string; checked: any };
+  // }) => {
+  //   const id = parseInt(event.target.value);
+  //   if (event.target.checked) {
+  //     setInputId(id);
+  //   } else {
+  //     setInputId(0);
+  //   }
+  // };
+  useEffect(() => {
+    controller.exeUseCase();
+  }, []);
   return (
     <>
       <div>
         <div>
-          your name
+          TODO:
           <input
             type="text"
-            value={inputName}
-            onChange={(event) => setInputName(event.target.value)}
-          ></input>
+            value={inputText}
+            onChange={(event) => setInputText(event.target.value)}
+          />
         </div>
         <div>
-          your email
-          <input
-            type="text"
-            value={inputEmail}
-            onChange={(event) => setInputEmail(event.target.value)}
-          ></input>
+          <SetEmergencyButton handleClick={setEmergencyClick} />
         </div>
 
-        <button
-          type="submit"
-          onClick={() => {
-            handleClick("POST");
-          }}
+        <SetUseCaseButton useCase={readUseCase} handleClick={setUseCaseClick}>
+          一覧を取得
+        </SetUseCaseButton>
+        <SetUseCaseButton
+          useCase={postMainUseCase}
+          handleClick={setUseCaseClick}
         >
-          追加
-        </button>
-        <button
-          type="submit"
-          onClick={() => {
-            handleClick("GET");
-          }}
-        >
-          一覧を表示
-        </button>
-        <button
-          type="submit"
-          onClick={() => {
-            handleClick("DELETE");
-          }}
-        >
-          削除
-        </button>
-        <button
-          type="submit"
-          onClick={() => {
-            handleClick("PUT");
-          }}
-        >
-          ユーザ情報更新
-        </button>
+          MainのTODOを追加
+        </SetUseCaseButton>
       </div>
 
-      <View viewModelData={viewModel} handlCheckbox={handleCheckbox} />
+      <View
+        viewModelData={viewModel}
+        handleClick={setUseCaseClick}
+        deleteMain={deleteMainUseCase}
+        deleteSub={deleteSubUseCase}
+        addSub={addSubUseCase}
+      />
     </>
   );
 }

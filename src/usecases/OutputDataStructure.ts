@@ -1,6 +1,5 @@
-import { User } from "./UserRepositoryInterface";
+import { MainTodo } from "@/entities/todo";
 
 export type OutputDataStructure = {
-  allUser: User[];
-  control: string;
+  allTodo: MainTodo[];
 };

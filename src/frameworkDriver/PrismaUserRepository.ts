@@ -11,17 +11,38 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     const users = await response.json();
     return users;
   }
-  async DELETE(id: number) {
-    const response = await fetch(`/api/users?id=${id}`, { method: "DELETE" });
+  async DeleteMain(id: number) {
+    const response = await fetch(`/api/users?id=${id}`, {
+      method: "DeleteMain",
+    });
     const users = response.json();
     return users;
   }
-  async PUT(
-    id: number,
-    data: { title: string; subTodo: SubTodo[] }
-  ): Promise<MainTodo[]> {
+  async DeleteSub(id: number) {
     const response = await fetch(`/api/users?id=${id}`, {
-      method: "PUT",
+      method: "DeleteSub",
+    });
+    const users = response.json();
+    return users;
+  }
+  async AddSub(data: {
+    main: {
+      connect: {
+        id: number;
+      };
+    };
+    sub: {
+      create: {
+        todo: string;
+        emergency: number;
+        main: {
+          connect: { id: number };
+        };
+      };
+    };
+  }): Promise<MainTodo[]> {
+    const response = await fetch(`/api/users`, {
+      method: "AddSub",
       body: JSON.stringify({ data }),
     });
     const users = response.json();
@@ -34,9 +55,10 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     return users;
   }
 
-  // async findById(id: number): Promise<User | null> {
-  //   const user = await this.prisma.User.findUnique({ where: { id } });
-  //   if (!user) return null;
-  //   return user;
-  // }
+  async findById(id: number): Promise<MainTodo | SubTodo | null> {
+    const response = await fetch(`/api/users?id=${id}`, { method: "findById" });
+    const todo = response.json();
+    if (!todo) return null;
+    return todo;
+  }
 }

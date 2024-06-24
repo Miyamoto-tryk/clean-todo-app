@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+
 import prisma from "@/entities/prisma";
-import { useServerInsertedHTML } from "next/navigation";
 
 export async function GET() {
   const users = await getAll();
@@ -9,13 +8,14 @@ export async function GET() {
 }
 export async function POST(request: NextRequest) {
   const { data } = await request.json();
+  console.log(data);
 
   await prisma.mainTodo.create({ data });
   const users = await getAll();
 
   return NextResponse.json(users);
 }
-export async function DELETE(request: NextRequest) {
+export async function DeleteMain(request: NextRequest) {
   const id = parseInt(request.nextUrl.searchParams.get("id")!);
 
   await prisma.mainTodo.delete({
@@ -24,11 +24,18 @@ export async function DELETE(request: NextRequest) {
   const users = await getAll();
   return NextResponse.json(users);
 }
-export async function PUT(request: NextRequest) {
+export async function DeleteSub(request: NextRequest) {
   const id = parseInt(request.nextUrl.searchParams.get("id")!);
 
+  await prisma.subTodo.delete({
+    where: { id },
+  });
+  const users = await getAll();
+  return NextResponse.json(users);
+}
+export async function AddSub(request: NextRequest) {
   const { data } = await request.json();
-  await prisma.mainTodo.update({ where: { id }, data });
+  await prisma.subTodo.create({ data });
   const users = await getAll();
   return NextResponse.json(users);
 }

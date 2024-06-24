@@ -1,5 +1,5 @@
+import { MainTodo } from "@/entities/todo";
+
 export type ViewModelDataStructure = {
-  displayMessage: string;
-  allNames: string[];
-  id: number[];
+  allTodo: MainTodo[];
 };

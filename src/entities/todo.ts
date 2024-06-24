@@ -11,3 +11,8 @@ export type SubTodo = Entity & {
   readonly isCompleted: boolean;
   readonly emergency: number;
 };
+
+export const isMainTodo = (item: any): item is MainTodo => {
+  // MainTodo型に強制キャストしてatackプロパティがあればWeapon型とする
+  return !!(item as MainTodo)?.subTodo;
+};
