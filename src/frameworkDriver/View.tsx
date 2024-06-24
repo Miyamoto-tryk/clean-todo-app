@@ -1,4 +1,5 @@
-import { ViewModelDataStructure } from "@/interface_adaptor/ViewModelDataStructure";
+import { ViewModelDataStructure } from "@/interfaceAdaptor/ViewModelDataStructure";
+import { useState } from "react";
 
 type Props = {
   viewModelData: ViewModelDataStructure;
@@ -10,11 +11,10 @@ type Props = {
   }) => void;
 };
 export const View = ({ viewModelData, handlCheckbox }: Props) => {
+  const [selectedUser, setSelectedUser] = useState<number>();
   const allNames = viewModelData.allNames;
   const displayMessage = viewModelData.displayMessage;
   const id = viewModelData.id;
-
-  const checked = viewModelData.id.map((elm) => false);
 
   return (
     <>
@@ -22,9 +22,11 @@ export const View = ({ viewModelData, handlCheckbox }: Props) => {
         {allNames.map((name, index) => (
           <li key={index}>
             <input
-              type="checkbox"
+              type="radio"
               value={id[index]}
+              checked={selectedUser === id[index]}
               onChange={(event) => {
+                setSelectedUser(id[index]);
                 handlCheckbox(event);
               }}
             ></input>

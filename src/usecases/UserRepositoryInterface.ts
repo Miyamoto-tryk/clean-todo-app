@@ -1,10 +1,12 @@
-export class User {
-  constructor(public id: number, public name: string, public email: string) {}
-}
+import { MainTodo, SubTodo } from "@/entities/todo";
+
 export interface UserRepositoryInterface {
-  POST(data: { name: string; email: string }): Promise<User[]>;
-  DELETE(id: number): Promise<User[]>;
-  PUT(id: number, data: { name: string; email: string }): Promise<User[]>;
-  GET(): Promise<User[]>;
+  POST(data: { title: string; subTodo: SubTodo[] }): Promise<MainTodo[]>;
+  DELETE(id: number): Promise<MainTodo[]>;
+  PUT(
+    id: number,
+    data: { title: string; subTodo: SubTodo[] }
+  ): Promise<MainTodo[]>;
+  GET(): Promise<MainTodo[]>;
   // findById(id: number): Promise<User | null>;
 }

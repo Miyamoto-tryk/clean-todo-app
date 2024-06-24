@@ -15,7 +15,7 @@ export class Presenter implements OutputBoundaryInterface {
     );
     const id: number[] = outputData.allUser.map((user) => user.id);
     this.viewModel.allNames = allNames;
-    this.viewModel.displayMessage = outputData.control + "ed";
+    this.viewModel.displayMessage = outputData.control + " done";
     this.viewModel.id = id;
     console.log(this.viewModel);
   }

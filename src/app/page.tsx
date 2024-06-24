@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { Controller } from "@/interface_adaptor/Controller";
-import { PrismaUserRepository } from "@/framework_driver/PrismaUserRepository";
+import { Controller } from "@/interfaceAdaptor/Controller";
+import { PrismaUserRepository } from "@/frameworkDriver/PrismaUserRepository";
 import prisma from "@/entities/prisma";
-import { Presenter } from "@/interface_adaptor/Presenter";
+import { Presenter } from "@/interfaceAdaptor/Presenter";
 import { SetStateAction, useEffect, useState } from "react";
-import { ViewModelDataStructure } from "@/interface_adaptor/ViewModelDataStructure";
+import { ViewModelDataStructure } from "@/interfaceAdaptor/ViewModelDataStructure";
 import { UseCaseInteractor } from "@/usecases/UseCaseInteractor";
-import { View } from "@/framework_driver/View";
+import { View } from "@/frameworkDriver/View";
 import { userAgentFromString } from "next/server";
 
 export default function Home() {
@@ -33,8 +33,8 @@ export default function Home() {
   );
 
   const handleClick = async (control: string) => {
-    controller.setEmail(inputEmail);
-    controller.setName(inputName);
+    setInputEmail(inputEmail);
+    setInputName(inputName);
     controller.setControl(control);
     await controller.exeUseCase();
     setViewModel(presenter.viewModel);

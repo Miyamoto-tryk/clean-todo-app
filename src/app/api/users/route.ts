@@ -10,7 +10,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   const { data } = await request.json();
 
-  await prisma.User.create({ data });
+  await prisma.mainTodo.create({ data });
   const users = await getAll();
 
   return NextResponse.json(users);
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const id = parseInt(request.nextUrl.searchParams.get("id")!);
 
-  await prisma.User.delete({
+  await prisma.mainTodo.delete({
     where: { id },
   });
   const users = await getAll();
@@ -28,12 +28,12 @@ export async function PUT(request: NextRequest) {
   const id = parseInt(request.nextUrl.searchParams.get("id")!);
 
   const { data } = await request.json();
-  await prisma.User.update({ where: { id }, data });
+  await prisma.mainTodo.update({ where: { id }, data });
   const users = await getAll();
   return NextResponse.json(users);
 }
 
 async function getAll() {
-  const users = await prisma.User.findMany();
+  const users = await prisma.mainTodo.findMany();
   return users;
 }

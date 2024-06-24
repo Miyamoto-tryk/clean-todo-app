@@ -1,11 +1,9 @@
-import {
-  User,
-  UserRepositoryInterface,
-} from "@/usecases/UserRepositoryInterface";
+import { MainTodo, SubTodo } from "@/entities/todo";
+import { UserRepositoryInterface } from "@/usecases/UserRepositoryInterface";
 import { PrismaClient } from "@prisma/client";
 
 export class PrismaUserRepository implements UserRepositoryInterface {
-  async POST(data: { name: string; email: string }) {
+  async POST(data: { title: string; subTodo: SubTodo[] }) {
     const response = await fetch("/api/users", {
       method: "POST",
       body: JSON.stringify({ data }),
@@ -20,8 +18,8 @@ export class PrismaUserRepository implements UserRepositoryInterface {
   }
   async PUT(
     id: number,
-    data: { name: string; email: string }
-  ): Promise<User[]> {
+    data: { title: string; subTodo: SubTodo[] }
+  ): Promise<MainTodo[]> {
     const response = await fetch(`/api/users?id=${id}`, {
       method: "PUT",
       body: JSON.stringify({ data }),
@@ -30,7 +28,7 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     return users;
   }
 
-  async GET(): Promise<User[]> {
+  async GET(): Promise<MainTodo[]> {
     const response = await fetch("/api/users", { method: "GET" });
     const users = await response.json();
     return users;
