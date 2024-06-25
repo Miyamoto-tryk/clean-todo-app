@@ -40,14 +40,13 @@ export const View = ({
               SubのTODOに追加
             </SetUseCaseButton>
             <div>
-              <Spacer size={5} />
               {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
                 mainTodo.subTodo.map((subTodo) => (
                   <div key={subTodo.id}>
                     {subTodo.todo}
-                    <Spacer size={5} />
+                    <Spacer size={2} horizontal={true} />
                     <div>緊急度：{subTodo.emergency}</div>
-                    <Spacer size={5} />
+                    <Spacer size={2} horizontal={true} />
                     <SetUseCaseButton
                       handleClick={handleClick}
                       useCase={deleteSub}
