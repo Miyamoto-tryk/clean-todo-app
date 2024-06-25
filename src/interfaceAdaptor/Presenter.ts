@@ -8,7 +8,18 @@ export class Presenter implements OutputBoundaryInterface {
   };
 
   output(outputData: OutputDataStructure): void {
-    this.viewModel.allTodo = outputData.allTodo;
+    console.log(outputData);
+    this.viewModel.allTodo = outputData.allMainTodo.map((mainTodo) => {
+      const subTodos = outputData.allSubTodo.filter(
+        (subTodo) => subTodo.authorId == mainTodo.id
+      );
+      return {
+        id: mainTodo.id,
+        title: mainTodo.title,
+        subTodo: subTodos,
+      };
+    });
+    console.log("viewModelData is :");
     console.log(this.viewModel);
   }
 }

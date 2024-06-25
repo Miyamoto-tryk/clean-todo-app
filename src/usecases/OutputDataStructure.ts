@@ -1,5 +1,6 @@
-import { MainTodo } from "@/entities/todo";
+import { MainTodo, SubTodo } from "@/entities/todo";
 
 export type OutputDataStructure = {
-  allTodo: MainTodo[];
+  allMainTodo: MainTodo[];
+  allSubTodo: SubTodo[];
 };

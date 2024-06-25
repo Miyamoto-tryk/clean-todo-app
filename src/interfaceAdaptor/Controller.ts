@@ -17,6 +17,10 @@ export class Controller {
   async exeUseCase() {
     await this.useCaseInteractor.handle(this.inputData);
   }
+
+  setId(id: number) {
+    this.inputData.id = id;
+  }
   setUseCase(useCaseInteractor: InputBoundaryInterface) {
     this.useCaseInteractor = useCaseInteractor;
   }

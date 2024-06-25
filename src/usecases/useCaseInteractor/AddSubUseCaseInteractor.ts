@@ -49,24 +49,14 @@ export class AddSubCaseInteractor implements InputBoundaryInterface {
     const inputEmergency = inputData.emergency;
 
     await this.userRepository.AddSub({
-      main: {
-        connect: {
-          id: inputMainId,
-        },
-      },
-      sub: {
-        create: {
-          todo: inputContent,
-          emergency: inputEmergency,
-          main: {
-            connect: { id: inputMainId },
-          },
-        },
-      },
+      todo: inputContent,
+      emergency: inputEmergency,
+      authorId: inputMainId,
     });
     const allTodo = await this.userRepository.GET();
     const outputData: OutputDataStructure = {
-      allTodo: allTodo,
+      allMainTodo: allTodo[0],
+      allSubTodo: allTodo[1],
     };
     this.presenter.output(outputData);
   }

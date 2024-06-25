@@ -3,13 +3,14 @@ type Entity = {
 };
 export type MainTodo = Entity & {
   readonly title: string;
-  readonly idCompleted: boolean;
+
   readonly subTodo: SubTodo[];
 };
 export type SubTodo = Entity & {
   readonly todo: string;
-  readonly isCompleted: boolean;
+
   readonly emergency: number;
+  readonly authorId: number;
 };
 
 export const isMainTodo = (item: any): item is MainTodo => {

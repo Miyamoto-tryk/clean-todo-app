@@ -51,7 +51,12 @@ export default function Home() {
   const setEmergencyClick = (emergency: number) => {
     setInputEmergency(emergency);
   };
-  const setUseCaseClick = async (useCase: InputBoundaryInterface) => {
+  const setUseCaseClick = async (
+    useCase: InputBoundaryInterface,
+    id: number
+  ) => {
+    setInputId(id);
+    controller.setId(id);
     controller.setUseCase(useCase);
     await controller.exeUseCase();
     setViewModel(presenter.viewModel);
@@ -84,11 +89,16 @@ export default function Home() {
           <SetEmergencyButton handleClick={setEmergencyClick} />
         </div>
 
-        <SetUseCaseButton useCase={readUseCase} handleClick={setUseCaseClick}>
+        <SetUseCaseButton
+          useCase={readUseCase}
+          id={0}
+          handleClick={setUseCaseClick}
+        >
           一覧を取得
         </SetUseCaseButton>
         <SetUseCaseButton
           useCase={postMainUseCase}
+          id={0}
           handleClick={setUseCaseClick}
         >
           MainのTODOを追加

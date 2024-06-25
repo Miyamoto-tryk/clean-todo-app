@@ -48,7 +48,8 @@ export class DeleteSubCaseInteractor implements InputBoundaryInterface {
     await this.userRepository.DeleteSub(inputId);
     const allTodo = await this.userRepository.GET();
     const outputData: OutputDataStructure = {
-      allTodo: allTodo,
+      allMainTodo: allTodo[0],
+      allSubTodo: allTodo[1],
     };
     this.presenter.output(outputData);
   }

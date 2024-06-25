@@ -3,8 +3,8 @@ import { UserRepositoryInterface } from "@/usecases/UserRepositoryInterface";
 import { PrismaClient } from "@prisma/client";
 
 export class PrismaUserRepository implements UserRepositoryInterface {
-  async POST(data: { title: string; subTodo: SubTodo[] }) {
-    const response = await fetch("/api/users", {
+  async POST(data: { title: string }) {
+    const response = await fetch(`/api/users?table=${"main"}`, {
       method: "POST",
       body: JSON.stringify({ data }),
     });
@@ -12,46 +12,34 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     return users;
   }
   async DeleteMain(id: number) {
-    const response = await fetch(`/api/users?id=${id}`, {
-      method: "DeleteMain",
+    console.log("ここには到達:DeleteMain in userRepository");
+    const response = await fetch(`/api/users?id=${id}&table=main`, {
+      method: "DELETE",
     });
-    const users = response.json();
+    const users = await response.json();
     return users;
   }
   async DeleteSub(id: number) {
     const response = await fetch(`/api/users?id=${id}`, {
-      method: "DeleteSub",
+      method: "DELETE",
+      body: JSON.stringify("sub"),
     });
     const users = response.json();
     return users;
   }
-  async AddSub(data: {
-    main: {
-      connect: {
-        id: number;
-      };
-    };
-    sub: {
-      create: {
-        todo: string;
-        emergency: number;
-        main: {
-          connect: { id: number };
-        };
-      };
-    };
-  }): Promise<MainTodo[]> {
-    const response = await fetch(`/api/users`, {
-      method: "AddSub",
+  async AddSub(data: { todo: string; emergency: number; authorId: number }) {
+    const response = await fetch(`/api/users?table=${"sub"}`, {
+      method: "POST",
       body: JSON.stringify({ data }),
     });
     const users = response.json();
     return users;
   }
 
-  async GET(): Promise<MainTodo[]> {
+  async GET() {
     const response = await fetch("/api/users", { method: "GET" });
     const users = await response.json();
+    console.log(users);
     return users;
   }
 

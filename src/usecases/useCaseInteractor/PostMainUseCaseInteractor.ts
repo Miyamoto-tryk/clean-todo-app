@@ -16,13 +16,11 @@ export class PostMainCaseInteractor implements InputBoundaryInterface {
 
   public async handle(inputData: InputData): Promise<void> {
     const inputContent = inputData.content;
-    await this.userRepository.POST({
-      title: inputContent,
-      subTodo: [],
-    });
+    await this.userRepository.POST({ title: inputContent });
     const allTodo = await this.userRepository.GET();
     const outputData: OutputDataStructure = {
-      allTodo: allTodo,
+      allMainTodo: allTodo[0],
+      allSubTodo: allTodo[1],
     };
     this.presenter.output(outputData);
   }

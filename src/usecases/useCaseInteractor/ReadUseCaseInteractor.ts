@@ -6,7 +6,7 @@ import { OutputBoundaryInterface } from "../OutputBoundaryInterface";
 import { InputData } from "../InputDataStructure";
 import { OutputDataStructure } from "../OutputDataStructure";
 import { title } from "process";
-import { isMainTodo } from "../../entities/todo";
+import { SubTodo, isMainTodo } from "../../entities/todo";
 export class ReadCaseInteractor implements InputBoundaryInterface {
   //依存関係を注入
   constructor(
@@ -16,8 +16,10 @@ export class ReadCaseInteractor implements InputBoundaryInterface {
 
   public async handle(inputData: InputData): Promise<void> {
     const allTodo = await this.userRepository.GET();
+
     const outputData: OutputDataStructure = {
-      allTodo: allTodo,
+      allMainTodo: allTodo[0],
+      allSubTodo: allTodo[1],
     };
     this.presenter.output(outputData);
   }

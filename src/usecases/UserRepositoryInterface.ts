@@ -1,25 +1,14 @@
 import { MainTodo, SubTodo } from "@/entities/todo";
 
 export interface UserRepositoryInterface {
-  POST(data: { title: string; subTodo: SubTodo[] }): Promise<MainTodo[]>;
-  DeleteSub(id: number): Promise<MainTodo[]>;
-  DeleteMain(id: number): Promise<MainTodo[]>;
+  POST(data: { title: string }): Promise<[MainTodo[], SubTodo[]]>;
+  DeleteSub(id: number): Promise<[MainTodo[], SubTodo[]]>;
+  DeleteMain(id: number): Promise<[MainTodo[], SubTodo[]]>;
   AddSub(data: {
-    main: {
-      connect: {
-        id: number;
-      };
-    };
-    sub: {
-      create: {
-        todo: string;
-        emergency: number;
-        main: {
-          connect: { id: number };
-        };
-      };
-    };
-  }): Promise<MainTodo[]>;
-  GET(): Promise<MainTodo[]>;
-  findById(id: number): Promise<MainTodo | SubTodo | null>;
+    todo: string;
+    emergency: number;
+    authorId: number;
+  }): Promise<[MainTodo[], SubTodo[]]>;
+  GET(): Promise<[MainTodo[], SubTodo[]]>;
+  //findById(id: number): Promise<MainTodo | SubTodo | null>;
 }

@@ -5,7 +5,7 @@ import { InputBoundaryInterface } from "@/usecases/InputBoundaryInterface";
 import { SetUseCaseButton } from "@/app/components/SetUseCaseButton";
 
 type Props = {
-  handleClick: (useCase: InputBoundaryInterface) => void;
+  handleClick: (useCase: InputBoundaryInterface, id: number) => void;
   viewModelData: ViewModelDataStructure;
   deleteMain: InputBoundaryInterface;
   deleteSub: InputBoundaryInterface;
@@ -25,10 +25,18 @@ export const View = ({
         {allTodo.map((mainTodo: MainTodo) => (
           <div key={mainTodo.id}>
             {mainTodo.title}
-            <SetUseCaseButton handleClick={handleClick} useCase={deleteMain}>
+            <SetUseCaseButton
+              handleClick={handleClick}
+              id={mainTodo.id}
+              useCase={deleteMain}
+            >
               完了
             </SetUseCaseButton>
-            <SetUseCaseButton handleClick={handleClick} useCase={addSub}>
+            <SetUseCaseButton
+              handleClick={handleClick}
+              id={mainTodo.id}
+              useCase={addSub}
+            >
               SubのTODOに追加
             </SetUseCaseButton>
             <div>
@@ -43,6 +51,7 @@ export const View = ({
                     <SetUseCaseButton
                       handleClick={handleClick}
                       useCase={deleteSub}
+                      id={subTodo.id}
                     >
                       完了
                     </SetUseCaseButton>
