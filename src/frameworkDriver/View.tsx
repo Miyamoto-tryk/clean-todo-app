@@ -3,6 +3,7 @@ import { ViewModelDataStructure } from "@/interfaceAdaptor/ViewModelDataStructur
 import { Spacer } from "../app/utils/Spacer";
 import { InputBoundaryInterface } from "@/usecases/InputBoundaryInterface";
 import { SetUseCaseButton } from "@/app/components/SetUseCaseButton";
+import { Fleur_De_Leah } from "next/font/google";
 
 type Props = {
   handleClick: (useCase: InputBoundaryInterface, id: number) => void;
@@ -22,9 +23,11 @@ export const View = ({
   return (
     <>
       <div>
+        <Spacer size={10} horizontal={false} />
         {allTodo.map((mainTodo: MainTodo) => (
           <div key={mainTodo.id}>
             {mainTodo.title}
+            <Spacer size={10} horizontal={true} />
             <SetUseCaseButton
               handleClick={handleClick}
               id={mainTodo.id}
@@ -39,31 +42,34 @@ export const View = ({
             >
               SubのTODOに追加
             </SetUseCaseButton>
-            <div>
-              {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
-                mainTodo.subTodo.map((subTodo) => (
-                  <div key={subTodo.id}>
-                    {subTodo.todo}
-                    <Spacer size={2} horizontal={true} />
-                    <div>緊急度：{subTodo.emergency}</div>
-                    <Spacer size={2} horizontal={true} />
-                    <SetUseCaseButton
-                      handleClick={handleClick}
-                      useCase={deleteSub}
-                      id={subTodo.id}
-                    >
-                      完了
-                    </SetUseCaseButton>
-                  </div>
-                ))
-              ) : (
-                <></>
-              )}
+            <div style={{ display: "flex" }}>
+              <Spacer size={30} horizontal={true} />
+              <div>
+                {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
+                  mainTodo.subTodo.map((subTodo) => (
+                    <div key={subTodo.id} style={{ display: "flex" }}>
+                      <div style={{ width: "30%" }}>{subTodo.todo}</div>
+                      <Spacer size={10} horizontal={true} />
+                      <div>緊急度：{subTodo.emergency}</div>
+                      <Spacer size={5} horizontal={true} />
+                      <SetUseCaseButton
+                        handleClick={handleClick}
+                        useCase={deleteSub}
+                        id={subTodo.id}
+                      >
+                        完了
+                      </SetUseCaseButton>
+                    </div>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
+            <Spacer size={30} horizontal={true} />
           </div>
         ))}
       </div>
-      <div></div>
     </>
   );
 };

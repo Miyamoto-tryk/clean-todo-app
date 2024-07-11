@@ -14,6 +14,6 @@ export type SubTodo = Entity & {
 };
 
 export const isMainTodo = (item: any): item is MainTodo => {
-  // MainTodo型に強制キャストしてatackプロパティがあればWeapon型とする
+  // MainTodo型に強制キャストして
   return !!(item as MainTodo)?.subTodo;
 };

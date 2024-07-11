@@ -37,6 +37,11 @@ export async function DELETE(request: NextRequest) {
   console.log("mainID is:" + id);
   console.log("table is:" + table);
   if (table == "main") {
+    await prisma.subTodo.deleteMany({
+      where: {
+        authorId: id,
+      },
+    });
     await prisma.mainTodo.delete({
       where: { id: id },
     });
