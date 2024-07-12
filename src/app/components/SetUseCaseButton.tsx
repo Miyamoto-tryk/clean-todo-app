@@ -15,7 +15,11 @@ export const SetUseCaseButton = ({
   children,
 }: Props) => {
   return (
-    <button type="submit" onClick={() => handleClick(useCase, id)}>
+    <button
+      type="submit"
+      style={{ fontSize: "18px" }}
+      onClick={() => handleClick(useCase, id)}
+    >
       {children}
     </button>
   );

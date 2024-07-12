@@ -22,43 +22,93 @@ export const View = ({
   const allTodo = viewModelData.allTodo;
   return (
     <>
-      <div>
-        <Spacer size={10} horizontal={false} />
-        {allTodo.map((mainTodo: MainTodo) => (
-          <div key={mainTodo.id}>
-            {mainTodo.title}
-            <Spacer size={10} horizontal={true} />
-            <SetUseCaseButton
-              handleClick={handleClick}
-              id={mainTodo.id}
-              useCase={deleteMain}
+      <div style={{ display: "flex", fontSize: "18px" }}>
+        <Spacer size={30} horizontal={true} />
+        <div
+          style={{
+            display: "grid",
+            gridGap: "20px",
+          }}
+        >
+          {allTodo.map((mainTodo: MainTodo) => (
+            <div
+              key={mainTodo.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "5fr 4fr",
+                backgroundColor: "GrayText",
+              }}
             >
-              完了
-            </SetUseCaseButton>
-            <SetUseCaseButton
-              handleClick={handleClick}
-              id={mainTodo.id}
-              useCase={addSub}
-            >
-              SubのTODOに追加
-            </SetUseCaseButton>
-            <div style={{ display: "flex" }}>
-              <Spacer size={30} horizontal={true} />
+              {/* (1,1) */}
+              <div
+                style={{
+                  fontSize: "24px",
+                  display: "flex",
+                  backgroundColor: "CaptionText",
+                  color: "black",
+                }}
+              >
+                <Spacer size={10} horizontal={true} />
+                {mainTodo.title}
+              </div>
+              {/* (1,2) */}
+              <div
+                style={{
+                  display: "flex",
+                  backgroundColor: "CaptionText",
+                  color: "black",
+                }}
+              >
+                <SetUseCaseButton
+                  handleClick={handleClick}
+                  id={mainTodo.id}
+                  useCase={deleteMain}
+                >
+                  完了
+                </SetUseCaseButton>
+                <Spacer size={20} horizontal={true}></Spacer>
+                <SetUseCaseButton
+                  handleClick={handleClick}
+                  id={mainTodo.id}
+                  useCase={addSub}
+                >
+                  SubのTODOに追加
+                </SetUseCaseButton>
+                <Spacer size={20} horizontal={true}></Spacer>
+              </div>
+              {/* (2,1) */}
+              <div style={{ display: "flex" }}>
+                <Spacer size={30} horizontal={true} />
+                <div>
+                  {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
+                    mainTodo.subTodo.map((subTodo) => (
+                      <div style={{ height: "40px" }} key={subTodo.id}>
+                        <Spacer size={10} horizontal={false} />
+                        <div>{subTodo.todo}</div>
+                      </div>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
+              {/* (2,2) */}
               <div>
                 {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
                   mainTodo.subTodo.map((subTodo) => (
-                    <div key={subTodo.id} style={{ display: "flex" }}>
-                      <div style={{ width: "30%" }}>{subTodo.todo}</div>
-                      <Spacer size={10} horizontal={true} />
-                      <div>緊急度：{subTodo.emergency}</div>
-                      <Spacer size={5} horizontal={true} />
-                      <SetUseCaseButton
-                        handleClick={handleClick}
-                        useCase={deleteSub}
-                        id={subTodo.id}
-                      >
-                        完了
-                      </SetUseCaseButton>
+                    <div style={{ height: "40px" }} key={subTodo.id}>
+                      <Spacer size={10} horizontal={false} />
+                      <div style={{ display: "flex" }}>
+                        <div>緊急度：{subTodo.emergency}</div>
+                        <Spacer size={5} horizontal={true} />
+                        <SetUseCaseButton
+                          handleClick={handleClick}
+                          useCase={deleteSub}
+                          id={subTodo.id}
+                        >
+                          完了
+                        </SetUseCaseButton>
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -66,9 +116,8 @@ export const View = ({
                 )}
               </div>
             </div>
-            <Spacer size={30} horizontal={true} />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );
