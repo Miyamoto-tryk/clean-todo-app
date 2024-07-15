@@ -4,7 +4,29 @@ import { Spacer } from "../app/utils/Spacer";
 import { InputBoundaryInterface } from "@/usecases/InputBoundaryInterface";
 import { SetUseCaseButton } from "@/app/components/SetUseCaseButton";
 import { Fleur_De_Leah } from "next/font/google";
+import styled from "styled-components";
 
+const FlexCol = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const SubGridTodo = styled.div`
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+`;
+const GridItem = styled(FlexRow)`
+  border-bottom: 1px solid white;
+`;
+const MainGridTodo = styled.div`
+  display: grid;
+  grid-gap: 20px;
+`;
 type Props = {
   handleClick: (useCase: InputBoundaryInterface, id: number) => void;
   viewModelData: ViewModelDataStructure;
@@ -22,103 +44,85 @@ export const View = ({
   const allTodo = viewModelData.allTodo;
   return (
     <>
-      <div style={{ display: "flex", fontSize: "18px" }}>
+      <FlexRow style={{ fontSize: "18px" }}>
         <Spacer size={30} horizontal={true} />
-        <div
-          style={{
-            display: "grid",
-            gridGap: "20px",
-          }}
-        >
+        <MainGridTodo>
           {allTodo.map((mainTodo: MainTodo) => (
-            <div
-              key={mainTodo.id}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "5fr 4fr",
-                backgroundColor: "GrayText",
-              }}
-            >
-              {/* (1,1) */}
-              <div
+            <SubGridTodo key={mainTodo.id}>
+              <GridItem
                 style={{
                   fontSize: "24px",
-                  display: "flex",
                   backgroundColor: "CaptionText",
                   color: "black",
                 }}
               >
                 <Spacer size={10} horizontal={true} />
                 {mainTodo.title}
-              </div>
-              {/* (1,2) */}
-              <div
-                style={{
-                  display: "flex",
-                  backgroundColor: "CaptionText",
-                  color: "black",
-                }}
-              >
-                <SetUseCaseButton
-                  handleClick={handleClick}
-                  id={mainTodo.id}
-                  useCase={deleteMain}
+              </GridItem>
+
+              <FlexCol style={{ backgroundColor: "CaptionText" }}>
+                <Spacer size={2} />
+                <GridItem
+                  style={{
+                    backgroundColor: "CaptionText",
+                    color: "black",
+                  }}
                 >
-                  完了
-                </SetUseCaseButton>
-                <Spacer size={20} horizontal={true}></Spacer>
-                <SetUseCaseButton
-                  handleClick={handleClick}
-                  id={mainTodo.id}
-                  useCase={addSub}
-                >
-                  SubのTODOに追加
-                </SetUseCaseButton>
-                <Spacer size={20} horizontal={true}></Spacer>
-              </div>
-              {/* (2,1) */}
-              <div style={{ display: "flex" }}>
-                <Spacer size={30} horizontal={true} />
-                <div>
-                  {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
-                    mainTodo.subTodo.map((subTodo) => (
-                      <div style={{ height: "40px" }} key={subTodo.id}>
-                        <Spacer size={10} horizontal={false} />
-                        <div>{subTodo.todo}</div>
-                      </div>
-                    ))
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
-              {/* (2,2) */}
-              <div>
-                {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
-                  mainTodo.subTodo.map((subTodo) => (
-                    <div style={{ height: "40px" }} key={subTodo.id}>
-                      <Spacer size={10} horizontal={false} />
-                      <div style={{ display: "flex" }}>
-                        <div>緊急度：{subTodo.emergency}</div>
-                        <Spacer size={5} horizontal={true} />
-                        <SetUseCaseButton
-                          handleClick={handleClick}
-                          useCase={deleteSub}
-                          id={subTodo.id}
-                        >
-                          完了
-                        </SetUseCaseButton>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
+                  <SetUseCaseButton
+                    handleClick={handleClick}
+                    id={mainTodo.id}
+                    useCase={deleteMain}
+                  >
+                    完了
+                  </SetUseCaseButton>
+                  <Spacer size={20} horizontal={true}></Spacer>
+                  <SetUseCaseButton
+                    handleClick={handleClick}
+                    id={mainTodo.id}
+                    useCase={addSub}
+                  >
+                    SubのTODOに追加
+                  </SetUseCaseButton>
+                  <Spacer size={20} horizontal={true}></Spacer>
+                </GridItem>
+                <Spacer size={2} />
+              </FlexCol>
+
+              {mainTodo.subTodo && mainTodo.subTodo.length > 0 ? (
+                mainTodo.subTodo.map((subTodo) => (
+                  <>
+                    <GridItem
+                      key={subTodo.todo}
+                      style={{ backgroundColor: "GrayText" }}
+                    >
+                      <Spacer size={10} horizontal={true} />
+                      {subTodo.todo}
+                    </GridItem>
+                    <GridItem
+                      key={subTodo.id}
+                      style={{ backgroundColor: "GrayText" }}
+                    >
+                      <div>緊急度：{subTodo.emergency}</div>
+                      <Spacer size={5} horizontal={true} />
+                      <SetUseCaseButton
+                        handleClick={handleClick}
+                        useCase={deleteSub}
+                        id={subTodo.id}
+                      >
+                        完了
+                      </SetUseCaseButton>
+                    </GridItem>
+                  </>
+                ))
+              ) : (
+                <></>
+              )}
+            </SubGridTodo>
           ))}
-        </div>
-      </div>
+          <SubGridTodo></SubGridTodo>
+        </MainGridTodo>
+        <Spacer size={30} horizontal={true} />
+      </FlexRow>
     </>
   );
 };

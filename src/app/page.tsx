@@ -61,6 +61,7 @@ export default function Home() {
     controller.setUseCase(useCase);
     await controller.exeUseCase();
     setViewModel(presenter.viewModel);
+    setInputText("");
   };
   // const handleCheckbox = (event: {
   //   target: { value: string; checked: any };
@@ -89,6 +90,7 @@ export default function Home() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <div
@@ -96,16 +98,15 @@ export default function Home() {
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
-            height: "200px",
           }}
         >
+          <Spacer size={20} />
           <div
             style={{
-              height: "100px",
               fontSize: "32px",
-              alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: "center",
               display: "flex",
+              flexWrap: "wrap",
             }}
           >
             {/* 入力フォーム */}
@@ -129,12 +130,12 @@ export default function Home() {
           </div>
 
           {/* <SetUseCaseButton
-          useCase={readUseCase}
-          id={0}
-          handleClick={setUseCaseClick}
-        >
-          一覧を取得
-        </SetUseCaseButton> */}
+            useCase={readUseCase}
+            id={0}
+            handleClick={setUseCaseClick}
+          >
+            一覧を取得
+          </SetUseCaseButton> */}
           <Spacer size={10}></Spacer>
           <SetUseCaseButton
             useCase={postMainUseCase}
@@ -143,6 +144,7 @@ export default function Home() {
           >
             MainのTODOを追加
           </SetUseCaseButton>
+          <Spacer size={20} />
         </div>
 
         <View
